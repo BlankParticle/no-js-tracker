@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Receiver</h1>
+    <p>Received message: <span id="message"></span></p>
+    <canvas height="300" width="300"></canvas>
+    <style>
+      canvas {
+        border: 1px solid black;
+      }
+    </style>
+    <script>
+      const message = document.getElementById("message");
+
+      const socket = new WebSocket("ws://localhost:3001/socket");
+      const ctx = document.querySelector("canvas").getContext("2d");
+
+      socket.addEventListener("message", function (event) {
+        message.textContent = event.data;
+        const absCord = Number(event.data);
+
+        const x = absCord % 30;
+        const y = Math.floor(absCord / 30);
+
+        ctx.fillStyle = "red";
+        ctx.fillRect(x * 10, y * 10, 10, 10);
+
+        console.log(x, y);
+      });
+    </script>
+  </body>
+</html>
